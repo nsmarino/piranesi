@@ -5,7 +5,6 @@ const endpoint = 'https://api.printful.com/orders/'
 
 // Receives webhook from Stripe and confirms Printful order.
 export default async (req:NextApiRequest, res:NextApiResponse) => {
-  console.log(req)
 
   // NOT REAL CODE:
   // const printfulResponse = await axios.post(

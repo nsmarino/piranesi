@@ -33,17 +33,7 @@ export async function getPrintfulProducts() {
   return productsWithVariantInfo
 }
 
-export async function postCostEstimate() {
 
-}
-
-export async function postDraftOrder() {
-
-}
-
-export async function postConfirmOrder() {
-
-}
 
 
 

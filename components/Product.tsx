@@ -1,7 +1,6 @@
 import Image from 'next/image'
 
 const Product:React.FC<{product:iProduct}> = ({ product }) => {
-  console.log(product)
   return (
     <section>
       <h2>{product.sync_product.name}</h2>

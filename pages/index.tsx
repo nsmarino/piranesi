@@ -1,7 +1,4 @@
-import Head from 'next/head'
 import { GetStaticProps } from 'next' 
-// @ts-ignore
-import styles from '../styles/Home.module.css'
 
 import { getPrintfulProducts } from '../datasources/printful'
 
@@ -33,6 +30,6 @@ export const getStaticProps:GetStaticProps = async (context) => {
   return {
     props: {
       products
-    }, // will be passed to the page component as props
+    }
   }
 }
