@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import printfulCall from './calls/printful/estimate-costs'
+import printfulEstimateCosts from './calls/printful/estimate-costs'
 
 export default async (req:NextApiRequest, res:NextApiResponse) => {
   if (req.method === 'POST') {
-    const { data } = await printfulCall(req.body)
+    const { data } = await printfulEstimateCosts(req.body)
 
     const orderCosts:iOrderCosts = data.result
 

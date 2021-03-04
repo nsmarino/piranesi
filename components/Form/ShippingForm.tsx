@@ -52,6 +52,7 @@ const ShippingForm:React.FC<{loading:boolean}> = ({ loading }) => {
 
       <button
           type="submit"
+          disabled={loading}
         >{loading ? 'LOADING' : 'Calculate shipping fees'}</button>
     </div>
   )

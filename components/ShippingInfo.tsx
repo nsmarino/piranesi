@@ -1,11 +1,13 @@
 
 interface iShippingInfo {
-  recipient:iRecipient, 
+  recipient:iRecipient
+  loading: boolean 
   setReadyForCheckout: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ShippingInfo:React.FC<iShippingInfo> = ({
   recipient, 
+  loading,
   setReadyForCheckout
 }) => {
 
@@ -20,7 +22,7 @@ const ShippingInfo:React.FC<iShippingInfo> = ({
       {      
         Object.entries(recipient).map(([key, value]) => <p key={key}>{value}</p>)
       }
-      <button onClick={handleClick}>Edit</button>
+      <button onClick={handleClick} disabled={loading}>Edit</button>
     </div>
   )
 }
