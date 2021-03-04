@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next' 
 
-import { getPrintfulProducts } from '../datasources/printful'
+import getPrintfulProducts from '../datasources/printful'
 
 import Layout from '../components/Layout'
 import Product from '../components/Product'

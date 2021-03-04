@@ -4,7 +4,7 @@ import Link from 'next/link'
 const Layout:React.FC<{title: string}> = ({title, children}) => {
 
   return (
-    <div style={{width: '800px', margin: '0 auto', background: 'lavenderblush', padding: '1rem'}}>
+    <div style={{width: '800px', margin: '0 auto', padding: '1rem'}}>
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />

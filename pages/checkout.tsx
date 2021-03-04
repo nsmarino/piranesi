@@ -1,94 +1,96 @@
-import axios from 'axios'
-
 import { useState } from 'react'
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import axios from 'axios'
+import { useStripe, useElements } from '@stripe/react-stripe-js';
 
 // Components:
 import Layout from '../components/Layout'
-import CartItem from '../components/CartItem'
+import CheckoutForm from '../components/CheckoutForm'
+import CheckoutSidebar from '../components/CheckoutSidebar';
 
-const dummyOrder:iOrder = {
-  recipient: {
-    address1: '338 Main St',
-    city: 'Cold Spring',
-    state_code: 'NY',
-    country_code: 'US',
-    name: 'Nicholas Marino',
-    zip: '10516'
-  },
-  items: [
-    {
-      name: "Three of Clovers Long Sleeve",
-      thumbnail_url: "https://files.cdn.printful.com/files/3b9/3b923458f7181d7dccda88e0a41b8a9a_preview.png",
-      sync_variant_id: 2317366105,
-      quantity: 2
-    }
-  ]
-}
+const dummyItems:iItem[] = [{
+  name: "Three of Clovers Long Sleeve",
+  thumbnail_url: "https://files.cdn.printful.com/files/3b9/3b923458f7181d7dccda88e0a41b8a9a_preview.png",
+  sync_variant_id: 2317366105,
+  quantity: 2
+}]
 
+// TODO: Decide what state should live here 
+// and what should live in CheckoutForm.tsx
 const Checkout:React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [costs, setCosts] = useState({
+  // STATE:
+  const [loading, setLoading] = useState(false)
+  const [readyForCheckout, setReadyForCheckout] = useState(false)
+  const [recipient, setRecipient] = useState<iRecipient>({
+    name: '',
+    address1: '',
+    address2: '',
+    city: '',
+    zip: '',
+    state_code: '',
+    country_code: 'US'
+  })
+  const [costDisplay, setCostDisplay] = useState<iCostDisplay>({
     subtotal: 0,
     estimates: 0,
     total: 0,
   })
-  const [loading, setLoading] = useState(false)
-  const [readyForCheckout, setReadyForCheckout] = useState(false)
 
-
-  const estimateOrderCosts = async () => {
+  const estimateOrderCosts = async (order:iOrder) => {
     setLoading(true)
 
     const { 
       data:orderCosts 
     } = await axios
-      .post<iOrderCosts>('/api/estimateOrderCosts', dummyOrder)
+      .post<iOrderCosts>('/api/estimateOrderCosts', order)
 
-    setCosts({
+    setCostDisplay({
       subtotal: orderCosts.costs.subtotal,
       estimates: (orderCosts.costs.shipping + orderCosts.costs.tax),
       total: orderCosts.costs.total
     })
+    setRecipient(order.recipient)
     setReadyForCheckout(true)
     setLoading(false)
   }
-
-  const handleCheckout = async () => {
+  const checkout = async (order:iOrder) => {
     setLoading(true)
-    const { data: { client_secret } } = await axios.post('/api/createOrder', dummyOrder)
+    const { data: { client_secret } } = await axios.post('/api/createOrder', order)
 
     const stripeConfirmation = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
         card: elements.getElement('card'),
       },
     });
+    // console.log(stripeConfirmation)
 
     setLoading(false)
   }
 
+  const submit = (order:iOrder,) => {
+    readyForCheckout ? checkout(order) : estimateOrderCosts(order)
+  }
+
   return (
     <Layout title="Checkout">
-      <h1>Testing Facility: Checkout</h1>
-      <p>Order info:</p>
-      <div style={{border: '4px ridge purple', width: 'fit-content'}}>
-      {dummyOrder.items.map(item => <CartItem item={item} key={item.sync_variant_id} />)}
-      </div>
-      <p>Subtotal {costs.subtotal}</p>
-      <p>Shipping and Taxes {costs.estimates}</p>
-      <p>Total {costs.total}</p>
-      <button style={{display: 'block',}} onClick={estimateOrderCosts} disabled={loading || readyForCheckout}>Estimate Order Costs</button>
-      <p>Card info:</p>
-      <p>4242424242424242 555 10/23</p>
-      <div style={{width: '250px', background: 'white', border: '1px solid purple', padding: '10px', borderRadius: '5px'}}>
-        <CardElement
-          options={{ hidePostalCode: true }}
-        />      
-      </div>
+      <h2>Checkout</h2>
+      
+        <CheckoutForm 
+          readyForCheckout={readyForCheckout}
+          setReadyForCheckout={setReadyForCheckout}
+          submit={submit}
+          stripe={stripe}
+          loading={loading}
+          items={dummyItems}
+          recipient={recipient}
+        />
 
-      <button style={{display: 'block',}} onClick={handleCheckout} disabled={!readyForCheckout || loading}>Place Order</button>
+        <CheckoutSidebar 
+          items={dummyItems} 
+          costs={costDisplay} 
+        />  
     </Layout>
   )
 }

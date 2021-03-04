@@ -3,10 +3,12 @@
 
 declare module '*.css'
 
+// Initial return from Printful store in 'src/datasources/getAllPrintfulProducts'
 interface iProduct_NO_VARIANTS {
   id: number
 }
 
+// Used in iVariant
 interface iFile {
   created: number
   dpi: number
@@ -25,11 +27,13 @@ interface iFile {
   width: number
 }
 
+// Used in iVariant
 interface iOption {
   id: string
   value: string | []
 }
 
+// Used in iProduct
 interface iVariant {
   currency: string
   external_id: string
@@ -51,6 +55,7 @@ interface iVariant {
   warehouse_product_variant_id: null
 }
 
+// Returned from Printful
 interface iProduct {
   sync_product: {
     id: number
@@ -63,6 +68,7 @@ interface iProduct {
   sync_variants: iVariant[]
 }
 
+// Item in cart; used in iOrder
 interface iItem {
   name: string
   thumbnail_url: string
@@ -70,22 +76,28 @@ interface iItem {
   quantity: number
 }
 
+// Received from form on checkout page; used in iOrder
+interface iRecipient {
+  address1: string
+  address2?: string
+  city: string
+  state_code: string
+  country_code: 'US'
+  name: string
+  email?: string
+  phone?: string
+  state_code?: string
+  zip: string
+}
+
+// Sent from checkout page to both estimate costs and complete checkout
 interface iOrder {
-  recipient: {
-    address1: string
-    address2?: string
-    city: string
-    state_code: string
-    country_code: 'US'
-    name: string
-    email?: string
-    phone?: string
-    state_code?: string
-    zip: string
-  }
+  recipient: iRecipient
   items: iItem[]
 }
 
+// Returned from estimate-costs and used to update costDisplay state
+// Purely cosmetic. Does not affect checkout function.
 interface iOrderCosts {
   costs: {
     currency: 'USD',
@@ -110,8 +122,11 @@ interface iOrderCosts {
   } 
 }
 
-interface iDraft {
-  
+// Displayed to user in CheckoutSidebar.tsx
+interface iCostDisplay {
+  subtotal: number
+  estimates: number
+  total: number
 }
 
 
