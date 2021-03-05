@@ -52,6 +52,7 @@ interface iVariant {
   sync_product_id: number
   synced: boolean
   variant_id: number
+  variant_size?: string
   warehouse_product_variant_id: null
 }
 
@@ -69,9 +70,17 @@ interface iProduct {
 }
 
 // Item in cart; used in iOrder
-interface iItem {
+interface iCartItem {
   name: string
-  thumbnail_url: string
+  id: string
+  price: number
+  size: string
+  image: string
+  sync_variant_id: number
+  quantity: number
+}
+
+interface iOrderItem {
   sync_variant_id: number
   quantity: number
 }

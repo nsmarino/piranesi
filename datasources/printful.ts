@@ -1,5 +1,8 @@
 import getAllPrintfulProducts from './getAllPrintfulProducts'
 import getPrintfulProductById from './getPrintfulProductById'
+import getPrintfulVariantSizes from './getPrintfulVariantSizes'
+
+// Variable names are too long. Clarity needed.
 
 async function getPrintfulProducts() {
   // Printful API will not return variant info for all products from single endpoint
@@ -9,15 +12,20 @@ async function getPrintfulProducts() {
     }
   } = await getAllPrintfulProducts()
 
-  
   // GET request to each id endpoint
   const productWithVariantsRequests:[Promise<iProduct>] = productsWithoutVariantInfo
     .map(getPrintfulProductById)
   
-  // wait for all GET requests
   const productsWithVariantInfo = await Promise.all(productWithVariantsRequests)
 
-  return productsWithVariantInfo
+  // More GET requests to get size for each variant (flaw in Printful API)
+  const variantSizeRequests:Promise<iProduct>[] = productsWithVariantInfo
+    .map(getPrintfulVariantSizes)
+  
+  // wait for all GET requests
+  const productsWithVariantInfoAndSize = await Promise.all(variantSizeRequests)
+
+  return productsWithVariantInfoAndSize
 }
 
 export default getPrintfulProducts

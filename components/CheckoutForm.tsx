@@ -1,22 +1,24 @@
-// UI logic
+// Hooks Department
 import { useEffect, useState } from 'react';
 import { useForm, FormProvider, FieldErrors } from 'react-hook-form';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
+import { useCart } from 'react-use-cart'
 
 // UI components
 import ShippingForm from './Form/ShippingForm'
 import PaymentForm from './Form/PaymentForm'
 import ShippingInfo from './ShippingInfo';
 
-// UI-server communication
+// client-server communication
 import axios from 'axios'
 
 interface iCheckoutForm {
-  items: iItem[], 
   setCostDisplay: React.Dispatch<React.SetStateAction<iCostDisplay>>
 }
 
-const CheckoutForm:React.FC<iCheckoutForm> = ({ items, setCostDisplay }) => {
+const CheckoutForm:React.FC<iCheckoutForm> = ({ setCostDisplay }) => {
+  const { items } = useCart()
+
   const stripe = useStripe();
   const elements = useElements();
   const methods = useForm<iRecipient>() 
@@ -42,11 +44,18 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ items, setCostDisplay }) => {
   [readyForCheckout])
 
   // CHECKOUT HANDLERS:
-  const estimateOrderCosts = async (shippingAddress:iRecipient, items:iItem[]) => {
+  const estimateOrderCosts = async (shippingAddress:iRecipient, cartItems) => {
     setLoading(true)
+
+    const orderItems:iOrderItem[] = cartItems.map((cartItem:iCartItem)=> {
+      return {
+        sync_variant_id: cartItem.sync_variant_id,
+        quantity: cartItem.quantity
+      }
+    })
     const order:iOrder = {
       recipient: shippingAddress,
-      items
+      items: orderItems
     }
     const { 
       data:orderCosts 
@@ -63,8 +72,21 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ items, setCostDisplay }) => {
     setLoading(false)
   }
 
-  const checkout = async (order:iOrder) => {
+  const checkout = async (recipient: iRecipient, cartItems) => {
     setLoading(true)
+
+    const orderItems:iOrderItem[] = cartItems.map((cartItem:iCartItem)=> {
+      return {
+        sync_variant_id: cartItem.sync_variant_id,
+        quantity: cartItem.quantity
+      }
+    })
+
+    const order:iOrder = {
+      recipient,
+      items: orderItems
+    }    
+
     const { data: { client_secret } } = await axios.post('/api/createOrder', order)
 
     const stripeConfirmation = await stripe.confirmCardPayment(client_secret, {
@@ -72,14 +94,14 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ items, setCostDisplay }) => {
         card: elements.getElement('card'),
       },
     });
-    // console.log(stripeConfirmation)
+    console.log(stripeConfirmation)
 
     setLoading(false)
   }
 
   const onSubmit = (shippingAddress:iRecipient) => {
     readyForCheckout ?
-      checkout({recipient, items})
+      checkout(recipient, items)
       :
       estimateOrderCosts(shippingAddress, items)  
   }
@@ -116,69 +138,3 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ items, setCostDisplay }) => {
 }
 
 export default CheckoutForm
-// import { Stripe } from '@stripe/stripe-js';
-// import { useForm, FormProvider } from 'react-hook-form';
-// import ShippingForm from './Form/ShippingForm'
-// import PaymentForm from './Form/PaymentForm'
-// import ShippingInfo from './ShippingInfo';
-// import { useEffect } from 'react';
-
-// interface iCheckoutForm {
-//   loading: boolean
-//   readyForCheckout: boolean 
-//   setReadyForCheckout: React.Dispatch<React.SetStateAction<boolean>>
-//   submit: (data:iOrder) => void
-//   stripe: Stripe
-//   recipient: iRecipient
-//   items: iItem[]
-// }
-
-// const CheckoutForm:React.FC<iCheckoutForm> = ({ 
-//   loading, 
-//   readyForCheckout,
-//   setReadyForCheckout, 
-//   submit, 
-//   items, 
-//   stripe,
-//   recipient 
-// }) => {
-//   const methods = useForm<iRecipient>()
-  
-//   useEffect(() => {
-//     if(!readyForCheckout) {
-//       methods.reset({...recipient})
-//     }
-//   },
-//   [readyForCheckout])
-
-
-
-//   return (
-//     <FormProvider {...methods}>
-//       <form
-//         onSubmit={methods.handleSubmit(() => {
-//           submit({recipient, items}) // Recipient from state
-//         })}
-//       >
-//         {readyForCheckout ?
-//           <>
-//           <ShippingInfo 
-//             recipient={recipient}
-//             setReadyForCheckout={setReadyForCheckout}
-//           />
-//           <PaymentForm
-//             stripe={stripe}
-//             readyForCheckout={readyForCheckout} 
-//             loading={loading}
-//           />
-//           </>
-//         :
-//           <ShippingForm loading={loading} />      
-//         }
-        
-//       </form>
-//     </FormProvider>  
-//   )
-// }
-
-// export default CheckoutForm

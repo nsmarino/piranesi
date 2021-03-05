@@ -1,11 +1,14 @@
 import type { AppProps /*, AppContext */ } from 'next/app'
 import StripeProvider from '../components/StripeProvider';
+import { CartProvider } from 'react-use-cart';
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <StripeProvider>
-      <Component {...pageProps} />
+      <CartProvider>
+        <Component {...pageProps} />
+      </CartProvider>
     </StripeProvider>
   )
 }

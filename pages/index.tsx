@@ -1,16 +1,18 @@
 import { GetStaticProps } from 'next' 
-
 import getPrintfulProducts from '../datasources/printful'
 
+// Components:
 import Layout from '../components/Layout'
 import Product from '../components/Product'
-import Link from 'next/link'
+import Cart from '../components/Cart'
 
 const Home:React.FC<{products:iProduct[]}> = ({ products }) => {
+
   return (
     <Layout title="Home">
-      <Link href="/checkout"><a>checkout</a></Link>
+      <div style={{display: 'flex'}}>
       <main>
+        <h2>Products</h2>
         {products.map(product => 
           <Product 
             product={product} 
@@ -18,6 +20,8 @@ const Home:React.FC<{products:iProduct[]}> = ({ products }) => {
           />
         )}
       </main>
+      <Cart />
+      </div>
     </Layout>
   )
 }
