@@ -2,8 +2,7 @@ import getAllPrintfulProducts from './getAllPrintfulProducts'
 import getPrintfulProductById from './getPrintfulProductById'
 import getPrintfulVariantSizes from './getPrintfulVariantSizes'
 
-// Variable names are too long. Clarity needed.
-
+// Only runs at build
 async function getPrintfulProducts() {
   // Printful API will not return variant info for all products from single endpoint
   const {

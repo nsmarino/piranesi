@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { useCart } from 'react-use-cart'
+import currency from '../utils/currency'
 
 const CartItem:React.FC<{ item:iCartItem }> = ({ item }) => {
   const { updateItemQuantity, removeItem } = useCart()
@@ -21,7 +22,7 @@ const CartItem:React.FC<{ item:iCartItem }> = ({ item }) => {
         height={50}
       />
       <p>{item.size}</p>
-      <p>${item.price}.00</p>
+      <p>{currency(item.price)}</p>
       <div>
         <button onClick={handleMinus}>-</button>
         {item.quantity}

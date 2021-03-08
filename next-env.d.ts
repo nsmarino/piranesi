@@ -56,6 +56,12 @@ interface iVariant {
   warehouse_product_variant_id: null
 }
 
+interface iCmsProduct {
+  name: string
+  description: string
+  price: number
+  id: number
+}
 // Returned from Printful
 interface iProduct {
   sync_product: {
@@ -67,16 +73,18 @@ interface iProduct {
     variants: number
   }
   sync_variants: iVariant[]
+  cmsData: iCmsProduct
 }
 
 // Item in cart; used in iOrder
 interface iCartItem {
   name: string
-  id: string
   price: number
   size: string
   image: string
+  id: string
   sync_variant_id: number
+  product_id: number
   quantity: number
 }
 
@@ -102,7 +110,7 @@ interface iRecipient {
 // Sent from checkout page to both estimate costs and complete checkout
 interface iOrder {
   recipient: iRecipient
-  items: iItem[]
+  items: iOrderItem[]
 }
 
 // Returned from estimate-costs and used to update costDisplay state
@@ -110,25 +118,16 @@ interface iOrder {
 interface iOrderCosts {
   costs: {
     currency: 'USD',
-    subtotal: number,
-    discount: number,
-    shipping: number,
-    digitization: number,
-    additional_fee: number,
-    fulfillment_fee: number,
-    tax: number,
-    vat: number,
-    total: number
+    subtotal: string,
+    discount: string,
+    shipping: string,
+    digitization: string,
+    additional_fee: string,
+    fulfillment_fee: string,
+    tax: string,
+    vat: string,
+    total: string
   },
-  retail_costs: {
-    currency: 'USD',
-    subtotal: number | null,
-    discount: number | null,
-    shipping: number | null,
-    tax: number | null,
-    vat: number | null,
-    total: number | null
-  } 
 }
 
 // Displayed to user in CheckoutSidebar.tsx
@@ -138,4 +137,17 @@ interface iCostDisplay {
   total: number
 }
 
+interface iConfirmation {
+  success: boolean
+  info: string
+}
 
+interface iEstimates {
+  shipping: number
+  tax: number
+}
+
+interface iDraftOrder {
+  amount: number
+  description: string
+}

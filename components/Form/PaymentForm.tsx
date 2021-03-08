@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { CardElement } from '@stripe/react-stripe-js';
-import { Stripe } from '@stripe/stripe-js';
+import { Stripe, StripeCardElementChangeEvent } from '@stripe/stripe-js';
 
 interface iPaymentForm {
   stripe: Stripe
@@ -8,14 +9,22 @@ interface iPaymentForm {
 }
 
 const PaymentForm:React.FC<iPaymentForm> = ({stripe, readyForCheckout, loading}) => {
-  return (<>
+  const [cardComplete, setCardComplete] = useState(false)
+  
+  const handleCardChange = (e:StripeCardElementChangeEvent) => {
+    if (e.complete) setCardComplete(true)
+  }
+
+  return (
+  <>
   <h3>payment</h3>
     <div style={{width: '500px', background: 'white', border: '2px solid purple', padding: '10px', borderRadius: '5px'}}>
-      <CardElement
-      />
+      
+      <CardElement onChange={e=>handleCardChange(e)} />
+
       <button
           type="submit"
-          disabled={ !stripe || !readyForCheckout || loading }
+          disabled={ !stripe || !readyForCheckout || loading || !cardComplete }
         >{loading ? 'LOADING' : 'Submit order'}
         </button>     
     </div>

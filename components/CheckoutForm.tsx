@@ -1,8 +1,9 @@
 // Hooks Department
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useForm, FormProvider, FieldErrors } from 'react-hook-form';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
 import { useCart } from 'react-use-cart'
+import ErrorContext from '../context/ErrorContext'
 
 // UI components
 import ShippingForm from './Form/ShippingForm'
@@ -13,11 +14,13 @@ import ShippingInfo from './ShippingInfo';
 import axios from 'axios'
 
 interface iCheckoutForm {
-  setCostDisplay: React.Dispatch<React.SetStateAction<iCostDisplay>>
+  setEstimates: React.Dispatch<React.SetStateAction<iEstimates>>
+  setConfirmation: React.Dispatch<React.SetStateAction<iConfirmation>>
 }
 
-const CheckoutForm:React.FC<iCheckoutForm> = ({ setCostDisplay }) => {
+const CheckoutForm:React.FC<iCheckoutForm> = ({ setConfirmation, setEstimates }) => {
   const { items } = useCart()
+  const { setError } = useContext(ErrorContext)
 
   const stripe = useStripe();
   const elements = useElements();
@@ -42,11 +45,12 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ setCostDisplay }) => {
     }
   },
   [readyForCheckout])
-
+  
   // CHECKOUT HANDLERS:
   const estimateOrderCosts = async (shippingAddress:iRecipient, cartItems) => {
+    try {
     setLoading(true)
-
+    
     const orderItems:iOrderItem[] = cartItems.map((cartItem:iCartItem)=> {
       return {
         sync_variant_id: cartItem.sync_variant_id,
@@ -57,27 +61,37 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ setCostDisplay }) => {
       recipient: shippingAddress,
       items: orderItems
     }
-    const { 
-      data:orderCosts 
+
+ 
+      const { 
+      data:{
+        costs
+      }
     } = await axios
       .post<iOrderCosts>('/api/estimateOrderCosts', order)
 
-    setCostDisplay({
-      subtotal: orderCosts.costs.subtotal,
-      estimates: (orderCosts.costs.shipping + orderCosts.costs.tax),
-      total: orderCosts.costs.total
+    setEstimates({
+      shipping: parseInt(costs.shipping,10),
+      tax: parseInt(costs.tax,10)
     })
     setRecipient(shippingAddress)
     setReadyForCheckout(true)
     setLoading(false)
+
+  } catch (err) {
+    setError(err.response.data.error)
+    setLoading(false)
+  }
   }
 
-  const checkout = async (recipient: iRecipient, cartItems) => {
+  const checkout = async (recipient: iRecipient, cartItems) => {  
+    try {  
     setLoading(true)
 
     const orderItems:iOrderItem[] = cartItems.map((cartItem:iCartItem)=> {
       return {
         sync_variant_id: cartItem.sync_variant_id,
+        id: cartItem.product_id,
         quantity: cartItem.quantity
       }
     })
@@ -94,9 +108,13 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ setCostDisplay }) => {
         card: elements.getElement('card'),
       },
     });
-    console.log(stripeConfirmation)
 
     setLoading(false)
+    setConfirmation({success: true, info: stripeConfirmation.paymentIntent.id})
+  } catch (err) {
+    setError(err.response.data.error)
+    setLoading(false)
+  }
   }
 
   const onSubmit = (shippingAddress:iRecipient) => {

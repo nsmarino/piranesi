@@ -1,12 +1,13 @@
 import SidebarItem from './SidebarItem'
 import { useCart } from 'react-use-cart'
+import currency from '../utils/currency'
 
 interface iSidebar {
-  costs: iCostDisplay
+  estimates: iEstimates
 }
 
-const CheckoutSidebar:React.FC<iSidebar> = ({ costs }) => {
-  const { items } = useCart()
+const CheckoutSidebar:React.FC<iSidebar> = ({ estimates }) => {
+  const { items, cartTotal } = useCart()
 
   return (
     <aside>
@@ -18,9 +19,10 @@ const CheckoutSidebar:React.FC<iSidebar> = ({ costs }) => {
         />
       )}
 
-      <p>Subtotal {costs.subtotal}</p>
-      <p>Shipping and Taxes {costs.estimates}</p>
-      <p>Total {costs.total}</p>
+      <p>Subtotal {currency(cartTotal)}</p>
+      <p>Shipping {currency(estimates.shipping)}</p>
+      <p>Tax {currency(estimates.tax)}</p>
+      <p>Total {currency(cartTotal + estimates.shipping + estimates.tax)}</p>
     </aside>
   )
 }
