@@ -151,3 +151,8 @@ interface iDraftOrder {
   amount: number
   description: string
 }
+
+interface iError {
+  reason: string
+  message: string
+}

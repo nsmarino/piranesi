@@ -4,31 +4,26 @@ import { useCart } from 'react-use-cart'
 
 // Components:
 import Layout from '../components/Layout'
-import CheckoutForm from '../components/CheckoutForm'
+import CheckoutForm from '../components/CheckoutForm/CheckoutForm'
 import CheckoutSidebar from '../components/CheckoutSidebar'
 import Placeholder from '../components/Placeholder'
 import Confirmation from '../components/Confirmation'
 
 const Checkout:React.FC = () => {
-  const { cartTotal, isEmpty } = useCart()
+  const { isEmpty } = useCart()
   const router = useRouter()
 
   const [confirmation, setConfirmation] = useState<iConfirmation>({success:false, info: ''})
   
-  const [costDisplay, setCostDisplay] = useState<iCostDisplay>({
-    subtotal: cartTotal,
-    estimates: 0.00,
-    total: cartTotal,
-  })
   const [estimates, setEstimates] = useState({shipping: 0, tax: 0})
 
+  // No products in cart = checkout cannot be viewed
   if (isEmpty) return <Placeholder />
 
+  // On order confirmation, fake redirect to success page
   useEffect(() => {
-    // Shows Confirmation component 
     if (confirmation.success) router.push('/checkout', '/success', { shallow: true })
   }, [confirmation])
-
   if (confirmation.success) return <Confirmation confirmation={confirmation} />
 
   return (
@@ -48,9 +43,3 @@ const Checkout:React.FC = () => {
 }
 
 export default Checkout
-
-export async function getServerSideProps(context) {
-  return {
-    props: {}, // will be passed to the page component as props
-  }
-}

@@ -3,11 +3,11 @@ import { useEffect, useState, useContext } from 'react';
 import { useForm, FormProvider, FieldErrors } from 'react-hook-form';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
 import { useCart } from 'react-use-cart'
-import ErrorContext from '../context/ErrorContext'
+import ErrorContext from '../../context/ErrorContext'
 
 // UI components
-import ShippingForm from './Form/ShippingForm'
-import PaymentForm from './Form/PaymentForm'
+import ShippingForm from './ShippingForm'
+import PaymentForm from './PaymentForm'
 import ShippingInfo from './ShippingInfo';
 
 // client-server communication
@@ -125,7 +125,7 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ setConfirmation, setEstimates })
   }
 
   const onError = (errors:FieldErrors) => {
-    console.log(errors)
+    setError({reason: 'Form Error', message: 'There was a problem submitting the form.'})
   }
 
   return (

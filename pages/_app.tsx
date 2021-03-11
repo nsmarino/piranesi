@@ -7,11 +7,11 @@ import '../styles/globals.css'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ErrorProvider>
-    <StripeProvider>
-      <CartProvider>
-        <Component {...pageProps} />
-      </CartProvider>
-    </StripeProvider>
+      <StripeProvider>
+        <CartProvider>
+          <Component {...pageProps} />
+        </CartProvider>
+      </StripeProvider>
     </ErrorProvider>
   )
 }

@@ -1,4 +1,9 @@
-const Error = ({error, setError}) => {
+interface iErrorComponent {
+  error: iError
+  setError: React.Dispatch<React.SetStateAction<iError>>
+}
+
+const Error:React.FC<iErrorComponent> = ({error, setError}) => {
   console.log(error)
   return (
     <div style={{background: 'red'}}>

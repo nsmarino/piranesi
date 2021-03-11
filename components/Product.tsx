@@ -1,6 +1,45 @@
+/** @jsxImportSource @emotion/react */
+
 import Image from 'next/image'
 import { useState } from 'react'
 import { useCart } from 'react-use-cart'
+import { jsx, css } from '@emotion/react'
+
+const Product_CSS = css`
+  width:250px;
+  padding: 10px;
+  margin: 10px;
+  border: 4px double black;
+  background: #dbc7cb;
+
+  h3 {
+    margin: 0;
+    font-weight: normal;
+    border: 1px solid black;
+  }
+
+  .price {
+    font-family: Arial;
+    margin: 0;
+    border: 1px solid black;
+  }
+
+  .description {
+    margin: 0;
+    border: 1px solid black;
+  }
+
+  .variant {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+  }
+  .action {
+    background: black;
+    color: white;
+    display: block;
+  }
+`
 
 const Product:React.FC<{product:iProduct}> = ({ product }) => {
   const { addItem } = useCart()
@@ -21,26 +60,28 @@ const Product:React.FC<{product:iProduct}> = ({ product }) => {
   }
 
   return (
-    <section style={{border: '2px solid purple', margin: '1rem'}}>
-      <h2>{product.cmsData.name}</h2>
-      <Image 
-        src={product.sync_product.thumbnail_url} 
-        alt={product.sync_product.name}
-        quality={100}
-        width={500}
-        height={500}
-      />
-      <p>{product.cmsData.description}</p>
-      <p>${variant.retail_price}</p>
+    <section css={Product_CSS}>
+      <h3>{product.cmsData.name}</h3>
+        <Image 
+          src={product.sync_product.thumbnail_url} 
+          alt={product.sync_product.name}
+          quality={100}
+          width={500}
+          height={500}
+        /> 
 
-      { // Buttons for different product sizes
+      <p className="price">${variant.retail_price}</p>
+      <p className="description">{product.cmsData.description}</p>
+      {
         product.sync_variants.map(v => 
           <button 
             key={v.id} 
             data-size={v.variant_size}
             onClick={e=>setVariant(v)}
+            className="variant"
             style={{ 
-              color: `${v===variant ? 'red':'black'}`
+              background: `${v===variant ? 'black':'white'}`,
+              color: `${v===variant ? 'white':'black'}`
             }}
           >
             {v.variant_size}
@@ -48,7 +89,7 @@ const Product:React.FC<{product:iProduct}> = ({ product }) => {
           )
       }
 
-      <button onClick={handleClick}>Add to cart</button>
+      <button onClick={handleClick} className="action">Add to cart</button>
     </section>
   )
 }
