@@ -1,3 +1,6 @@
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from '@emotion/react'
+
 // Hooks Department
 import { useEffect, useState, useContext } from 'react';
 import { useForm, FormProvider, FieldErrors } from 'react-hook-form';
@@ -12,6 +15,65 @@ import ShippingInfo from './ShippingInfo';
 
 // client-server communication
 import axios from 'axios'
+
+const CSS = css`
+background: var(--light);
+border-radius: 10px;
+padding: 3rem;
+width: 50%;
+h3 {
+  font-weight: normal;
+  font-size: 150%;
+  margin-top: 0;
+}
+
+input {
+  display: block;
+  width: 100%;
+  height: 2rem;
+  border: 2px solid var(--dark);
+  margin-bottom: 1rem;
+}
+select {
+  display: block;
+  height: 2rem;
+  border: 2px solid var(--dark);
+  margin-bottom: 1rem;
+}
+button {
+  background: var(--dark);
+  border: none;  
+  width: 100%;
+  height: 3rem;
+  color: white;
+  font-weight: bold;
+  :hover {
+    color: white;
+    background: black;
+  }
+}
+
+.shippingInfo {
+  header {
+    display: flex;
+    align-items: center;
+  }
+  h3 {
+    margin: 0;
+  }
+  .edit {
+    margin-left: 1rem;
+    width:3rem;
+    height:3rem;
+  }
+  p {
+    margin: 0.4rem;
+    color: grey;
+  }
+  margin-bottom: 50px;
+}
+
+`
 
 interface iCheckoutForm {
   setEstimates: React.Dispatch<React.SetStateAction<iEstimates>>
@@ -132,6 +194,7 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ setConfirmation, setEstimates })
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit,onError)}
+        css={CSS}
       >
         {readyForCheckout ?
           <>

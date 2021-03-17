@@ -17,12 +17,14 @@ const ShippingInfo:React.FC<iShippingInfo> = ({
   }
 
   return (
-    <div>
-      <h3>Shipping Info!</h3>
+    <div className="shippingInfo">
+      <header>
+        <h3>Shipping Info</h3>
+        <button className="edit" onClick={handleClick} disabled={loading}>Edit</button>
+        </header>
       {      
         Object.entries(recipient).map(([key, value]) => <p key={key}>{value}</p>)
       }
-      <button onClick={handleClick} disabled={loading}>Edit</button>
     </div>
   )
 }

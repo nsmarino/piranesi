@@ -6,39 +6,57 @@ import { useCart } from 'react-use-cart'
 import { jsx, css } from '@emotion/react'
 
 const Product_CSS = css`
-  width:250px;
-  padding: 10px;
-  margin: 10px;
-  border: 4px double black;
-  background: #dbc7cb;
-
-  h3 {
-    margin: 0;
-    font-weight: normal;
-    border: 1px solid black;
+flex: 0 0 100%;
+padding: 2rem;
+border-bottom: 4px solid black;
+display: flex;
+.text {
+  flex: 0 0 50%;
+}
+h3 {
+  font-family: Megalith;
+  font-weight: normal;
+  font-size: 600%;
+  margin: 0;
+}
+.imgCon {
+  background: white;
+}
+.description {
+  font-family: Megalith;
+  font-size: 300%;
+  color: grey;
+  margin: 0;
+}
+.price {
+  font-family: Arial;
+  font-size: 150%;
+  color: grey;
+}
+.variant {
+  width: 3rem;
+  height: 3rem;
+  margin-right: 0.5rem;
+  border: 2px solid var(--dark);
+  text-transform: lowercase;
+  font-family: Arial;
+  :hover {
+    border: 2px solid var(--light);
   }
-
-  .price {
-    font-family: Arial;
-    margin: 0;
-    border: 1px solid black;
+}
+.addBtn {
+  display: block;
+  height: 3rem;
+  margin-top: 1rem;
+  background: var(--dark);
+  color: white;
+  font-weight: bold;
+  border: none;
+  :hover {
+    color: black;
+    background: var(--light);
   }
-
-  .description {
-    margin: 0;
-    border: 1px solid black;
-  }
-
-  .variant {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid black;
-  }
-  .action {
-    background: black;
-    color: white;
-    display: block;
-  }
+}
 `
 
 const Product:React.FC<{product:iProduct}> = ({ product }) => {
@@ -61,18 +79,11 @@ const Product:React.FC<{product:iProduct}> = ({ product }) => {
 
   return (
     <section css={Product_CSS}>
-      <h3>{product.cmsData.name}</h3>
-        <Image 
-          src={product.sync_product.thumbnail_url} 
-          alt={product.sync_product.name}
-          quality={100}
-          width={500}
-          height={500}
-        /> 
-
-      <p className="price">${variant.retail_price}</p>
-      <p className="description">{product.cmsData.description}</p>
-      {
+      <div className="text">
+        <h3>{product.cmsData.name}</h3>
+        <p className="description">{product.cmsData.description}</p>
+        <p className="price">${variant.retail_price}</p>
+        {
         product.sync_variants.map(v => 
           <button 
             key={v.id} 
@@ -88,8 +99,22 @@ const Product:React.FC<{product:iProduct}> = ({ product }) => {
           </button>
           )
       }
+      <button onClick={handleClick} className="addBtn">Add to cart</button>
 
-      <button onClick={handleClick} className="action">Add to cart</button>
+      </div>
+
+      <div className="interface">
+        <div className="imgCon">
+        <Image 
+          src={product.sync_product.thumbnail_url} 
+          alt={product.sync_product.name}
+          quality={100}
+          width={500}
+          height={500}
+        />
+        </div>
+     
+      </div>
     </section>
   )
 }

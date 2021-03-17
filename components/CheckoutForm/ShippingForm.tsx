@@ -9,7 +9,7 @@ const ShippingForm:React.FC<{loading:boolean}> = ({ loading }) => {
   const { register } = useFormContext()
   return (
     <div>  
-      <h3>shipping</h3>
+      <h3>Shipping</h3>
       <Input 
         name={'name'} 
         label={'*First and last name'}
@@ -41,7 +41,8 @@ const ShippingForm:React.FC<{loading:boolean}> = ({ loading }) => {
         name="country_code" 
         ref={register} 
         defaultValue="US" 
-        readOnly 
+        readOnly
+        style={{background: 'lightgrey'}}
       />
 
       <Input 

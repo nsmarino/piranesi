@@ -5,21 +5,13 @@ import { useContext } from 'react'
 import ErrorContext from '../context/ErrorContext'
 
 import Head from 'next/head'
-import Link from 'next/link'
-
+// import Link from 'next/link'
+import Header from './Header'
 import Error from './Error'
 
 const Layout_CSS = css`
-display: flex;
-flex-direction:column;
-align-items:center;
-  h1 {
-    font-size: 500%;
-    text-align: center;
-    color: black;
-    font-family: Megalith;
-  }
-
+margin: 0 auto;
+max-width: 900px;
 `
 const Layout:React.FC<{title: string}> = ({title, children}) => {
   const { error, setError } = useContext(ErrorContext)
@@ -42,9 +34,8 @@ const Layout:React.FC<{title: string}> = ({title, children}) => {
             crossOrigin=""
           />
       </Head>
-      <header>
-      <Link href="/"><a><h1>MegalitH</h1></a></Link>
-      </header>
+      <Header />
+
       {
         error && <Error error={error} setError={setError} />
       }

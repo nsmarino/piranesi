@@ -17,17 +17,16 @@ const PaymentForm:React.FC<iPaymentForm> = ({stripe, readyForCheckout, loading})
 
   return (
   <>
-  <h3>payment</h3>
-    <div style={{width: '500px', background: 'white', border: '2px solid purple', padding: '10px', borderRadius: '5px'}}>
+  <h3>Payment</h3>
+    <div style={{width: '100%', background: 'white', border: '2px solid var(--dark)', padding: '10px', marginBottom: '0.5rem', borderRadius: '5px'}}>
       
       <CardElement onChange={e=>handleCardChange(e)} />
-
+      </div>
       <button
           type="submit"
           disabled={ !stripe || !readyForCheckout || loading || !cardComplete }
         >{loading ? 'LOADING' : 'Submit order'}
         </button>     
-    </div>
     </>
   )
 }

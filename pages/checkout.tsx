@@ -28,8 +28,7 @@ const Checkout:React.FC = () => {
 
   return (
     <Layout title="Checkout">
-      <h2>Checkout</h2>
-
+      <main style={{display: 'flex', marginBottom: '50px'}}>
         <CheckoutForm
           setEstimates={setEstimates}
           setConfirmation={setConfirmation}
@@ -38,6 +37,8 @@ const Checkout:React.FC = () => {
         <CheckoutSidebar 
           estimates={estimates}
         />  
+      </main>
+
     </Layout>
   )
 }

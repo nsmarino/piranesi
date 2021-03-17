@@ -1,5 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from '@emotion/react'
+import { useState } from 'react'
 
 // Data layer:
 import { GetStaticProps } from 'next' 
@@ -10,18 +9,13 @@ import cms from '../datasources/cms/cms'
 import Layout from '../components/Layout'
 import Product from '../components/Product'
 import Cart from '../components/Cart'
-
-const Main_CSS = css`
-display: flex;
-max-width: 900px;
-flex-wrap: wrap;
-justify-content: center;
-`
+import CartToggle from '../components/CartToggle'
 
 const Home:React.FC<{products:iProduct[]}> = ({ products }) => {
+  const [cartVis, setCartVis] = useState(false)
   return (
     <Layout title="Home">
-      <main css={Main_CSS}>
+      <main>
         {products.map(product => 
           <Product 
             product={product} 
@@ -29,7 +23,9 @@ const Home:React.FC<{products:iProduct[]}> = ({ products }) => {
           />
         )}
       </main>
-      <Cart />
+      <CartToggle setVis={setCartVis} />
+      <Cart vis={cartVis} setVis={setCartVis} />
+
     </Layout>
   )
 }
