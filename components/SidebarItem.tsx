@@ -14,10 +14,9 @@ padding: 0.5rem;
   padding: 0.5rem;
 }
 p {
-  font-family: Arial;
+  font-family: 'Courier New', Courier, monospace;
   margin: 0.2rem;
   color: white;
-  font-weight: bold;
 }
 `
 
