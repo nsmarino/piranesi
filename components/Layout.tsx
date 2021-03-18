@@ -23,12 +23,6 @@ const Layout:React.FC<{title: string}> = ({title, children}) => {
         <link rel="icon" href="/favicon.ico" />
         <link
             rel="preload"
-            href="/fonts/Computer-Modern.ttf"
-            as="font"
-            crossOrigin=""
-          />
-        <link
-            rel="preload"
             href="/fonts/Megalith-Regular.ttf"
             as="font"
             crossOrigin=""
