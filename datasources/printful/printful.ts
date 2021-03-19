@@ -16,7 +16,7 @@ async function getPrintfulProducts() {
     .map(getPrintfulProductById)
   
   const productsWithVariantInfo = await Promise.all(productWithVariantsRequests)
-
+console.log(productsWithVariantInfo[0])
   // More GET requests to get size for each variant (flaw in Printful API)
   const variantSizeRequests:Promise<iProduct>[] = productsWithVariantInfo
     .map(getPrintfulVariantSizes)

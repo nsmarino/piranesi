@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx, css } from '@emotion/react'
 import { useCart } from 'react-use-cart'
+import { useEffect, useState } from 'react'
 
 const CSS = css`
 position: fixed;
@@ -21,9 +22,17 @@ font-family: Arial;
 
 const CartToggle = ({ setVis }) => {
   const { totalItems } = useCart()
+  const [inBrowser, setInBrowser] = useState(false)
+
+  // Only runs code once app has mounted to DOM in browser
+  // Needed because cart information is kept in localStorage
+  useEffect(() => {
+    setInBrowser(true)
+  },[])
+
   return (
     <div css={CSS} onClick={() => setVis(true)}>
-      <p>{totalItems}</p>
+      <p>{inBrowser && totalItems}</p>
       <p>Cart</p>
     </div>
 )}
