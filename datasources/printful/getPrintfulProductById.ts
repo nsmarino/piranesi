@@ -9,7 +9,6 @@ const getPrintfulProductById = async (product:iProduct_NO_VARIANTS) => {
       'Authorization': `Basic ${Buffer.from(process.env.PRINTFUL_API_KEY).toString('base64')}`
     }
   })
-  console.log(util.inspect(res.data, {showHidden: false, depth: null}))
 
   return res.data.result
 }

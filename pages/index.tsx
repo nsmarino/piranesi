@@ -32,7 +32,6 @@ export default Home
 export const getStaticProps:GetStaticProps = async (context) => {
 
   // const res = await axios.get('https://my.backend/book')
-  // console.log(res)
 
   const initialProducts = await getPrintfulProducts()
 

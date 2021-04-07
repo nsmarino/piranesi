@@ -11,9 +11,6 @@ const getAllPrintfulProducts = async () => {
   }
   })
 
-  // console.log(util.inspect(res.data, {showHidden: false, depth: null}))
-
-
   return res
 
 }

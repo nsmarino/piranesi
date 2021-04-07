@@ -1,5 +1,4 @@
 const errorHandler = (err, res) => {
-  console.log('handler is being triggered', err)
   if (err.response) {
     res.status(400).json({ error: err.response.data.error})
   } else if (err.request) {
