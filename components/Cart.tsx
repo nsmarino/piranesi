@@ -51,7 +51,7 @@ h2 {
 
 }
 p {
-  font-family: Arial;
+  font-family: 'Courier New', Courier, monospace;
 }
 `
 

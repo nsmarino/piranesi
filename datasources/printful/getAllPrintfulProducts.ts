@@ -1,4 +1,5 @@
 import axios from 'axios'
+// import util from 'util'
 
 const endpoint = 'https://api.printful.com/store/products'
 

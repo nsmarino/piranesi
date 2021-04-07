@@ -4,7 +4,6 @@ interface iErrorComponent {
 }
 
 const Error:React.FC<iErrorComponent> = ({error, setError}) => {
-  console.log(error)
   return (
     <div style={{background: 'red'}}>
       <h2>ERROR</h2>

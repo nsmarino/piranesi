@@ -1,10 +1,8 @@
 import { useState } from 'react'
-
 // Data layer:
 import { GetStaticProps } from 'next' 
 import getPrintfulProducts from '../datasources/printful/printful'
 import cms from '../datasources/cms/cms'
-
 // Components:
 import Layout from '../components/Layout'
 import Product from '../components/Product'
@@ -32,6 +30,8 @@ const Home:React.FC<{products:iProduct[]}> = ({ products }) => {
 export default Home
 
 export const getStaticProps:GetStaticProps = async (context) => {
+
+  // const res = await axios.get('https://my.backend/book')
 
   const initialProducts = await getPrintfulProducts()
 
