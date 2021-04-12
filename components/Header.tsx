@@ -4,6 +4,8 @@ import { jsx, css } from '@emotion/react'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { under992 } from '../styles/mediaQueries'
+
 const CSS = css`
   display: flex;
   width: 100%;
@@ -20,6 +22,10 @@ const CSS = css`
     font-family: Megalith;
     margin: 0;
     font-size: 1000%;
+  }
+
+  ${under992} {
+    flex-direction: column;
   }
 `
 

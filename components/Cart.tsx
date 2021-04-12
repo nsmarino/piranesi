@@ -7,14 +7,23 @@ import Link from 'next/link'
 import CartItem from "./CartItem"
 import currency from '../utils/currency'
 
+import { under992 } from '../styles/mediaQueries'
+
 const CSS = css`
 background: var(--light);
 position: fixed;
 top: 0;
+right: -20%;
 height: 100vh;
 width: 20%;
 padding: 0.5rem;
 transition: right 0.4s;
+
+${under992} {
+  right: -40%;
+  width: 40%;
+}
+
 h2 {
   font-family: Megalith;
   font-size: 400%;
@@ -48,8 +57,8 @@ h2 {
     color: white;
     background: black;
   }
-
 }
+
 p {
   font-family: 'Courier New', Courier, monospace;
 }
@@ -66,7 +75,7 @@ const Cart = ({ vis, setVis }) => {
   },[])
 
   return (
-    <aside css={CSS} style={vis?{right: '0%'}:{right: '-20%'}}>
+    <aside css={CSS} style={vis ? {right: '0%'} : {}}>
       <h2>Cart</h2>
       <button className="closeBtn" onClick={() => setVis(false)}>Close</button>
         { inBrowser &&

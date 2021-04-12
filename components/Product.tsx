@@ -5,11 +5,16 @@ import { useState } from 'react'
 import { useCart } from 'react-use-cart'
 import { jsx, css } from '@emotion/react'
 
+import { under992 } from '../styles/mediaQueries'
+
 const Product_CSS = css`
 flex: 0 0 100%;
 padding: 2rem;
 border-bottom: 4px solid black;
 display: flex;
+${under992} {
+  flex-direction: column;
+}
 .text {
   flex: 0 0 50%;
 }

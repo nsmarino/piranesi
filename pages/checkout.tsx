@@ -1,3 +1,6 @@
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from '@emotion/react'
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useCart } from 'react-use-cart'
@@ -8,6 +11,8 @@ import CheckoutForm from '../components/CheckoutForm/CheckoutForm'
 import CheckoutSidebar from '../components/CheckoutSidebar'
 import Placeholder from '../components/Placeholder'
 import Confirmation from '../components/Confirmation'
+
+import { under992 } from '../styles/mediaQueries'
 
 const Checkout:React.FC = () => {
   const { isEmpty } = useCart()
@@ -27,8 +32,8 @@ const Checkout:React.FC = () => {
   if (confirmation.success) return <Confirmation confirmation={confirmation} />
 
   return (
-    <Layout title="Checkout">
-      <main style={{display: 'flex', marginBottom: '50px'}}>
+    <Layout title="Checkout | Megalith">
+      <main css={styles}>
         <CheckoutForm
           setEstimates={setEstimates}
           setConfirmation={setConfirmation}
@@ -42,5 +47,13 @@ const Checkout:React.FC = () => {
     </Layout>
   )
 }
+
+const styles = css`
+display: flex;
+${under992} {
+  flex-direction: column;
+  align-items: center;
+}
+`
 
 export default Checkout

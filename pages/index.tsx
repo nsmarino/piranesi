@@ -12,7 +12,7 @@ import CartToggle from '../components/CartToggle'
 const Home:React.FC<{products:iProduct[]}> = ({ products }) => {
   const [cartVis, setCartVis] = useState(false)
   return (
-    <Layout title="Home">
+    <Layout title="Megalith">
       <main>
         {products.map(product => 
           <Product 

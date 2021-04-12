@@ -5,7 +5,6 @@ import { useContext } from 'react'
 import ErrorContext from '../context/ErrorContext'
 
 import Head from 'next/head'
-// import Link from 'next/link'
 import Header from './Header'
 import Error from './Error'
 
