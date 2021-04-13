@@ -1,5 +1,5 @@
 import '@testing-library/cypress/add-commands';
-
+import 'cypress-plugin-stripe-elements';
 
 // ***********************************************************
 // This example support/index.js is processed and

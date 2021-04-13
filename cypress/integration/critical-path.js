@@ -1,21 +1,3 @@
-function fillInStripeForm() {
-  const input = [
-    ['cardnumber', '4242424242424242'],
-    ['exp-date', '1220'],
-    ['cvc', '123'],
-    ['postal', '10303']
-  ]
-  cy.wait(1000)
-  cy.get('.__PrivateStripeElement > iframe').each(($element, index, list) => {
-    cy.get($element).then(($iframe) => {
-      const body = $iframe.contents().find('body')
-      cy.wrap(body)
-        .find(`input[name=${input[index][0]}]`)
-        .type(input[index][1], { delay: 10 })
-    })
-  })
-}
-
 describe('Critical Path', () => {
   it('should add a product to the cart', () => {
     cy.visit('/');
@@ -50,15 +32,18 @@ describe('Critical Path', () => {
   })
   
   it('fills out payment info', () => {
-    fillInStripeForm()
-  //  cy.log('Fills out payment form')
-  //  cy.get('input[name="cardnumber"]').type('4242424242424242')
-  //  cy.get('input[name="ex-date"]').type('2424')
-  //  cy.get('input[name="cvc"]').type('123')
-  //  cy.get('input[name="postal"]').type('10303')
+    cy.get('#card-element').within(() => {
+      cy.fillElementsInput('cardNumber', '4242424242424242');
+      cy.fillElementsInput('cardExpiry', '1025'); // MMYY
+      cy.fillElementsInput('cardCvc', '123');
+      cy.fillElementsInput('postalCode', '10303');
+    });
 
-   cy.log('Submits payment info')
+    cy.log('Submits payment info')
+    cy.contains('Submit order').click().wait(1000)
 
-    // cy.log('Navigates to success page')
+    cy.log('Navigates to success page')
+    cy.contains('Congratulations, your order is on its way.')
+
   })
 });

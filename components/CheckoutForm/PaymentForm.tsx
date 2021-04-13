@@ -18,7 +18,7 @@ const PaymentForm:React.FC<iPaymentForm> = ({stripe, readyForCheckout, loading})
   return (
   <>
   <h3>Payment</h3>
-    <div style={{width: '100%', background: 'white', border: '2px solid var(--dark)', padding: '10px', marginBottom: '0.5rem', borderRadius: '5px'}}>
+    <div id="card-element" style={{width: '100%', background: 'white', border: '2px solid var(--dark)', padding: '10px', marginBottom: '0.5rem', borderRadius: '5px'}}>
       
       <CardElement onChange={e=>handleCardChange(e)} />
       </div>
