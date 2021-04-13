@@ -141,7 +141,8 @@ const CheckoutForm:React.FC<iCheckoutForm> = ({ setConfirmation, setEstimates })
     setLoading(false)
 
   } catch (err) {
-    setError(err.response.data.error)
+    console.log(err)
+    setError('There has been an error.')
     setLoading(false)
   }
   }

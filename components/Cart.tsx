@@ -75,7 +75,7 @@ const Cart = ({ vis, setVis }) => {
   },[])
 
   return (
-    <aside css={CSS} style={vis ? {right: '0%'} : {}}>
+    <aside id='cart' css={CSS} style={vis ? {right: '0%'} : {}}>
       <h2>Cart</h2>
       <button className="closeBtn" onClick={() => setVis(false)}>Close</button>
         { inBrowser &&

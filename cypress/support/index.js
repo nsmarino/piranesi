@@ -1,3 +1,6 @@
+import '@testing-library/cypress/add-commands';
+
+
 // ***********************************************************
 // This example support/index.js is processed and
 // loaded automatically before your test files.
@@ -16,6 +19,5 @@
 // Import commands.js using ES2015 syntax:
 // import './commands'
 // Testing Library queries for Cypress
-import '@testing-library/cypress/add-commands';
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

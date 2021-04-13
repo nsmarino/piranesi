@@ -31,8 +31,8 @@ const CartToggle = ({ setVis }) => {
   },[])
 
   return (
-    <div css={CSS} onClick={() => setVis(true)}>
-      <p>{inBrowser && totalItems}</p>
+    <div id='cartToggle' css={CSS} onClick={() => setVis(true)}>
+      <p id='cartTotal'>{inBrowser && totalItems}</p>
       <p>Cart</p>
     </div>
 )}

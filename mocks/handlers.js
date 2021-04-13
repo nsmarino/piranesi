@@ -1,18 +1,32 @@
 import { rest } from 'msw'
-import MOCK_getAllPrintfulProducts from './resolvers/getAllPrintfulProducts'
+
+import MOCK_createPrintfulOrder from './resolvers/createPrintfulOrder'
+import MOCK_estimatePrintfulOrderCosts from './resolvers/estimatePrintfulOrderCosts'
+import MOCK_confirmPrintfulOrder from './resolvers/confirmPrintfulOrder'
 
 export const handlers = [
-  rest.get('https://api.printful.com/store/products', (req, res, ctx) => {
+
+  // Estimate Printful Order Costs
+  rest.post('https://api.printful.com/orders/estimate-costs', (req, res, ctx) => {
+    console.log(req)
     return res(
-      ctx.json(MOCK_getAllPrintfulProducts)
+      ctx.json(MOCK_estimatePrintfulOrderCosts)
     )
   }),
-  // rest.get('https://api.printful.com/store/products/:id', (req, res, ctx) => {
-  //   const { id } = req.params
+  // Create Printful Order
+  rest.post('https://api.printful.com/orders', (req, res, ctx) => {
+    console.log(req)
+    return res(
+      ctx.json(MOCK_createPrintfulOrder)
+    )
+  }),
 
-  //   const product = MOCK_getPrintfulProductById.find(p=>p.result.sync_product.id===id)
-  //   return res(
-  //     ctx.json({})
-  //   )
-  // }),
+  // Confirm Printful Order
+  rest.post(`https://api.printful.com/orders/:id/confirm`, (req, res, ctx) => {
+    console.log(req)
+    return res(
+      ctx.json(MOCK_confirmPrintfulOrder)
+    )
+  }),
+
 ]

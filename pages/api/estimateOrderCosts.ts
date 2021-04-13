@@ -8,7 +8,6 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
       const { data } = await printfulEstimateCosts(req.body)
 
       const orderCosts:iOrderCosts = data.result
-
       res.status(200).json(orderCosts)
 
     } catch (err) {

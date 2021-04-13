@@ -1,5 +1,5 @@
-import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import printfulConfirmOrder from './calls/printful/confirm-order'
 
 export const config = {
   api: {
@@ -15,11 +15,8 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
       } = req.body;
 
       const printfulOrderId = paymentIntent.description
-      await axios.post(`https://api.printful.com/orders/${printfulOrderId}/confirm`, {
-        headers: {
-          'Authorization': `Basic ${Buffer.from(process.env.PRINTFUL_API_KEY).toString('base64')}`
-        },
-        })
+
+      await printfulConfirmOrder(printfulOrderId)
 
       res.json({received: true})
 
