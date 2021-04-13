@@ -29,6 +29,7 @@ const Checkout:React.FC = () => {
   useEffect(() => {
     if (confirmation.success) router.push('/checkout', '/success', { shallow: true })
   }, [confirmation])
+  
   if (confirmation.success) return <Confirmation confirmation={confirmation} />
 
   return (
